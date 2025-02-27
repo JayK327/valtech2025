@@ -43,47 +43,30 @@ class EmployeeTest {
 				.age(38).salary(78000).gender(Gender.FEMALE)
 				.level(8).experience(9).build());
 		
-	List<Employee> myEmp1 = employees.stream().filter(emp -> emp.getLevel()>0)
+	List<Employee> empl1 = employees.stream().filter(emp -> emp.getLevel()>0)
 			.collect(Collectors.toList());
-	System.out.println(myEmp1);
-	System.out.println("Salary by Level "+myEmp1.stream().mapToDouble(Employee :: getSalary).sum());
+	System.out.println(empl1);
+	System.out.println("Salary by Level "+empl1.stream().mapToDouble(Employee :: getSalary).sum());
 	
-	List<Employee> myEmp2 = employees.stream().filter(emp -> emp.getGender()==Gender.MALE)
+	List<Employee> empl2 = employees.stream().filter(emp -> emp.getGender()==Gender.MALE)
 			.collect(Collectors.toList());
-	System.out.println(myEmp2);
-	System.out.println("Salary by Gender "+myEmp2.stream().mapToDouble(Employee :: getSalary).sum());
+	System.out.println(empl2);
+	System.out.println("Salary by Gender "+empl2.stream().mapToDouble(Employee :: getSalary).sum());
 
-	List<Employee> myEmp3 = employees.stream().filter(emp -> emp.getName().equalsIgnoreCase("Amit"))
+	List<Employee> empl3 = employees.stream().filter(emp -> emp.getName().equalsIgnoreCase("Amit"))
 			.collect(Collectors.toList());
-	System.out.println("case"+myEmp3);
-	System.out.println("Salary by IgnoreCase "+myEmp3.stream().mapToDouble(Employee :: getSalary).sum());
+	System.out.println("case"+empl3);
+	System.out.println("Salary by IgnoreCase "+empl3.stream().mapToDouble(Employee :: getSalary).sum());
 
-	List<Employee> myEmp4 = employees.stream().filter(emp -> emp.getLevel()>0 && emp.getGender() == Gender.MALE)
+	List<Employee> empl4 = employees.stream().filter(emp -> emp.getLevel()>0 && emp.getGender() == Gender.MALE)
 			.collect(Collectors.toList());
-	System.out.println(myEmp4);
-	System.out.println("Salary by Level and Gender "+myEmp4.stream().mapToDouble(Employee :: getSalary).sum());
+	System.out.println(empl4);
+	System.out.println("Salary by Level and Gender "+empl4.stream().mapToDouble(Employee :: getSalary).sum());
 
 	Map<Gender,List<Employee>> mp = employees.stream().collect(Collectors.groupingBy(Employee :: getGender));
 	System.out.println(mp);
 	}
-
-	@Test
-	void testhashcode() {
-		Employee emp = new Employee(1,"Amit",30,105000,Gender.MALE,2,5);
-		int hash = emp.hashCode();
-		System.out.println(emp +" "+emp.hashCode());
-		assertEquals(hash, emp.hashCode());
-		assertEquals(hash,new Employee(1,"Amit",30,105000,Gender.MALE,2,5).hashCode());
-		emp.setAge(31);
-		System.out.println(emp +" "+emp.hashCode());
-		emp.setLevel(5);
-		System.out.println(emp+" "+emp.hashCode());
-		assertNotEquals(hash, emp.hashCode());
-		emp.setName("Rohan");
-		System.out.println(emp +" "+emp.hashCode());
-		assertNotEquals(hash, emp.hashCode());
-	}
-
+	
 	@Test
 	void testEquals() {
 		Employee emp1 = new Employee(1, "Amit", 30, 105000, Gender.MALE, 2, 5);
@@ -108,4 +91,24 @@ class EmployeeTest {
 		assertTrue(emp2.compareTo(emp1) > 0, "Employee with a higher level should come after");
 		assertTrue(emp1.compareTo(emp3) == 0, "Employees with the same level and experience should be equal");
 	}
+	
+	@Test
+	void testhashcode() {
+		Employee emp = new Employee(1,"Amit",30,105000,Gender.MALE,2,5);
+		int hash = emp.hashCode();
+		System.out.println(emp +" "+emp.hashCode());
+		assertEquals(hash, emp.hashCode());
+		assertEquals(hash,new Employee(1,"Amit",30,105000,Gender.MALE,2,5).hashCode());
+		emp.setAge(31);
+		System.out.println(emp +" "+emp.hashCode());
+		emp.setLevel(5);
+		System.out.println(emp+" "+emp.hashCode());
+		assertNotEquals(hash, emp.hashCode());
+		emp.setName("Rohan");
+		System.out.println(emp +" "+emp.hashCode());
+		assertNotEquals(hash, emp.hashCode());
+	}
+
+	
+
 }
