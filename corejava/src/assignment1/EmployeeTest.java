@@ -6,107 +6,177 @@ import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import assignment1.Employee.Gender;
 
 class EmployeeTest {
 	
-	private Collection<Employee> employees;
+	private List<Employee> employees;
+	private EmployeeService employeeService;
 	
-	@Test
-	void test() {
-		List<Employee> employees = new ArrayList<Employee>();
+	@BeforeEach
+	 void addEmp() {
+		employees = new ArrayList<Employee>();
 		
-		employees.add(Employee.builder().id(11).name("Amit").
-				age(30).salary(105000).gender(Gender.MALE).level(2)
+		employees.add(Employee.builder().id(1).name("Rohit").
+				age(30).salary(75000).gender(Gender.MALE).level(2)
 				.experience(5).build());
-		employees.add(Employee.builder().id(12).name("Raj")
-				.age(28).salary(60000).gender(Gender.MALE)
+		employees.add(Employee.builder().id(2).name("Virat")
+				.age(28).salary(80000).gender(Gender.MALE)
 				.level(1).experience(3).build());
-		employees.add(Employee.builder().id(13).name("Neha")
-				.age(26).salary(92000).gender(Gender.FEMALE)
-				.level(1).experience(2).build());
-		employees.add(Employee.builder().id(14).name("Pooja").
+		employees.add(Employee.builder().id(3).name("Neha")
+				.age(26).salary(52000).gender(Gender.FEMALE)
+				.level(1).experience(7).build());
+		employees.add(Employee.builder().id(4).name("Pooja").
 				age(32).salary(62000).gender(Gender.FEMALE).level(3)
 				.experience(6).build());
-		employees.add(Employee.builder().id(15).name("Suresh")
-				.age(45).salary(75000).gender(Gender.MALE)
-				.level(13).experience(15).build());
-		employees.add(Employee.builder().id(16).name("Kunal")
-				.age(40).salary(95000).gender(Gender.MALE)
-				.level(9).experience(10).build());
-		employees.add(Employee.builder().id(17).name("Simran").
-				age(29).salary(65000).gender(Gender.FEMALE).level(4)
+		employees.add(Employee.builder().id(5).name("Suresh")
+				.age(30).salary(75000).gender(Gender.MALE)
+				.level(5).experience(6).build());
+		employees.add(Employee.builder().id(6).name("Kunal")
+				.age(40).salary(55000).gender(Gender.MALE)
+				.level(6).experience(7).build());
+		employees.add(Employee.builder().id(7).name("Simran").
+				age(32).salary(55000).gender(Gender.FEMALE).level(4)
 				.experience(5).build());
-		employees.add(Employee.builder().id(18).name("Meera")
-				.age(38).salary(78000).gender(Gender.FEMALE)
-				.level(8).experience(9).build());
+		employees.add(Employee.builder().id(8).name("Anjali")
+				.age(26).salary(70000).gender(Gender.FEMALE)
+				.level(6).experience(4).build());
+		employees.add(Employee.builder().id(9).name("Hardik")
+				.age(28).salary(80000).gender(Gender.MALE)
+				.level(5).experience(3).build());
+		employees.add(Employee.builder().id(10).name("Esha")
+				.age(27).salary(68000).gender(Gender.FEMALE)
+				.level(3).experience(4).build());
 		
-	List<Employee> empl1 = employees.stream().filter(emp -> emp.getLevel()>0)
-			.collect(Collectors.toList());
-	System.out.println(empl1);
-	System.out.println("Salary by Level "+empl1.stream().mapToDouble(Employee :: getSalary).sum());
+
+
+		
 	
-	List<Employee> empl2 = employees.stream().filter(emp -> emp.getGender()==Gender.MALE)
-			.collect(Collectors.toList());
-	System.out.println(empl2);
-	System.out.println("Salary by Gender "+empl2.stream().mapToDouble(Employee :: getSalary).sum());
-
-	List<Employee> empl3 = employees.stream().filter(emp -> emp.getName().equalsIgnoreCase("Amit"))
-			.collect(Collectors.toList());
-	System.out.println("case"+empl3);
-	System.out.println("Salary by IgnoreCase "+empl3.stream().mapToDouble(Employee :: getSalary).sum());
-
-	List<Employee> empl4 = employees.stream().filter(emp -> emp.getLevel()>0 && emp.getGender() == Gender.MALE)
-			.collect(Collectors.toList());
-	System.out.println(empl4);
-	System.out.println("Salary by Level and Gender "+empl4.stream().mapToDouble(Employee :: getSalary).sum());
-
-	Map<Gender,List<Employee>> mp = employees.stream().collect(Collectors.groupingBy(Employee :: getGender));
-	System.out.println(mp);
 	}
-	
+    @Test
+    void testGetEmpByLevel() {
+    	System.out.println("------------testGetEmpByLevel----------");
+        Map<Employee.Gender, List<Employee>> result = EmployeeService.getEmpByLevel(employees, 5);
+        assertEquals(1, result.size()); //Hardik and suresh only male
+        Map<Employee.Gender, List<Employee>> result1 = EmployeeService.getEmpByLevel(employees, 6);
+        assertEquals(2, result1.size()); //Anjali and Kunal both gender
+            
+        result.forEach((gender, employeeList) -> {
+            System.out.println("Gender: " + gender);
+            employeeList.forEach(employee -> System.out.println(employee.getName()));
+        });
+        System.out.println("-------------");
+        result1.forEach((gender, employeeList) -> {
+            System.out.println("Gender: " + gender);
+            employeeList.forEach(employee -> System.out.println(employee.getName()));
+        });
+        assertTrue(result1.containsKey(Employee.Gender.MALE));
+        assertTrue(result1.containsKey(Employee.Gender.FEMALE));
+        assertTrue(result.containsKey(Employee.Gender.MALE));
+        
+        List<Employee> maleEmp = result.get(Employee.Gender.MALE);
+        assertEquals(2, maleEmp.size());
+    }
+    @Test
+    void testGetEmpByGender() {
+        Map<Employee.Gender, List<Employee>> result = EmployeeService.getEmpByGender(employees, Employee.Gender.MALE);
+        assertEquals(5, result.get(Employee.Gender.MALE).size());
+        Map<Employee.Gender, List<Employee>> result1 = EmployeeService.getEmpByGender(employees, Employee.Gender.FEMALE);
+        assertEquals(5, result1.get(Employee.Gender.FEMALE).size());
+    }
+
+    @Test
+    void testGetEmpByExactName() {
+        Map<Employee.Gender, List<Employee>> result = EmployeeService.getEmpByExactName(employees, "Virat");
+        assertNotEquals(2, result.get(Employee.Gender.MALE).size());
+        Map<Employee.Gender, List<Employee>> result1 = EmployeeService.getEmpByExactName(employees, "Rahul");
+        assertNull(result1.get(Employee.Gender.MALE));
+   
+        }
+
+    @Test
+    void testGetEmpBySubstringNameIgnoreCase() {
+        Map<Employee.Gender, List<Employee>> result = EmployeeService.getEmpBySubstringNameIgnoreCase(employees, "e");
+        assertEquals(1, result.get(Employee.Gender.MALE).size());   //Suresh
+        assertEquals(2, result.get(Employee.Gender.FEMALE).size());  //Neha ,Esha
+        assertEquals(2, result.size());
+        
+    }
+    @Test
+    void testGetEmpBySubstringName() {
+        Map<Employee.Gender, List<Employee>> result = EmployeeService.getEmpBySubstringName(employees, "e");
+        
+        assertEquals(1, result.get(Employee.Gender.MALE).size());   //Suresh 
+        assertEquals(1, result.get(Employee.Gender.FEMALE).size()); //Neha
+        assertEquals(2, result.size());
+        
+    }
+
+    @Test
+    void testGetEmpByGenderAndLevel() {
+        Map<Employee.Gender, List<Employee>> result = EmployeeService.getEmpByGenderAndLevel(employees, Employee.Gender.MALE, 5);
+        assertEquals(2, result.get(Employee.Gender.MALE).size());
+        assertTrue(result.containsKey(Employee.Gender.MALE));;
+    }
+
+    @Test
+    void testGetTotalSumOfSalary() {
+        double totalSalary = EmployeeService.getTotalSumOfSalary(employees);
+        assertEquals(672000.0, totalSalary, 0.01);
+    }
+
+    @Test
+    void testGetAllEmp() {
+        Map<Employee.Gender, List<Employee>> result = EmployeeService.getAllEmp(employees);
+        assertEquals(5, result.get(Employee.Gender.MALE).size());
+        assertEquals(5, result.get(Employee.Gender.FEMALE).size());
+        assertEquals(2, result.size());
+
+    }
+    Employee emp1 = new Employee(1, "Karan", 32, 68000f, Employee.Gender.MALE, 2, 6);
+	Employee emp2 = new Employee(1, "Karan", 32, 90000f, Employee.Gender.MALE, 2, 6);
+	Employee emp3 = new Employee(1, "Parth", 32, 68000f, Employee.Gender.MALE, 2, 6);
+	Employee emp4 = new Employee(1, "Karan", 32, 68000f, Employee.Gender.MALE, 3, 6);
+	Employee emp5 = new Employee(1, "Karan", 32, 68000f, Employee.Gender.FEMALE, 2, 6);
+	Employee emp6 = new Employee(1, "Karan", 24, 68000f, Employee.Gender.MALE, 2, 6);
+	Employee emp7 = new Employee(1, "Karan", 32, 68000f, Employee.Gender.MALE, 2, 7);
+    Employee emp8 = new Employee(1, "Karan", 32, 68000f, Employee.Gender.MALE, 2, 6);
+
+    
 	@Test
 	void testEquals() {
-		Employee emp1 = new Employee(1, "Amit", 30, 105000, Gender.MALE, 2, 5);
-		Employee emp2 = new Employee(1, "Amit", 30, 105000, Gender.MALE, 2, 5);
-		Employee emp3 = new Employee(2, "Raj", 28, 60000, Gender.MALE, 1, 3);
 
-		assertTrue(emp1.equals(emp2), "Objects with identical attributes should be equal");
-		assertFalse(emp1.equals(emp3), "Objects with different attributes should not be equal");
-		assertTrue(emp1.equals(emp1), "An object should be equal to itself");
-		assertFalse(emp1.equals(null), "An object should not be equal to null");
-		assertFalse(emp1.equals("Some String"), "An object should not be equal to an instance of a different class");
+
+		assertTrue(emp1.equals(emp1));
+        assertFalse(emp1.equals(emp2));
+        assertFalse(emp1.equals(emp3));
+        assertFalse(emp1.equals(null));
+        assertFalse(emp1.equals("XYZ"));
+		assertTrue(emp1.equals(emp8));
 	}
 
 	@Test
 	void testCompareTo() {
-		Employee emp1 = new Employee(1, "Amit", 30, 105000, Gender.MALE, 2, 5);
-		Employee emp2 = new Employee(2, "Raj", 28, 60000, Gender.MALE, 1, 3);
-		Employee emp3 = new Employee(3, "Neha", 26, 92000, Gender.FEMALE, 1, 2);
-		
-
-		assertTrue(emp1.compareTo(emp2) < 0, "Employee with a lower level should come first");
-		assertTrue(emp2.compareTo(emp1) > 0, "Employee with a higher level should come after");
-		assertTrue(emp1.compareTo(emp3) == 0, "Employees with the same level and experience should be equal");
+		assertEquals(0, emp1.compareTo(emp1));
+		assertTrue(emp1.compareTo(emp2) < 0);
+		assertTrue(emp2.compareTo(emp1) > 0);
+		assertTrue(emp1.compareTo(emp4) < 0);
+		assertTrue(emp5.compareTo(emp1) > 0);
 	}
 	
 	@Test
 	void testhashcode() {
-		Employee emp = new Employee(1,"Amit",30,105000,Gender.MALE,2,5);
-		int hash = emp.hashCode();
-		System.out.println(emp +" "+emp.hashCode());
-		assertEquals(hash, emp.hashCode());
-		assertEquals(hash,new Employee(1,"Amit",30,105000,Gender.MALE,2,5).hashCode());
-		emp.setAge(31);
-		System.out.println(emp +" "+emp.hashCode());
-		emp.setLevel(5);
-		System.out.println(emp+" "+emp.hashCode());
-		assertNotEquals(hash, emp.hashCode());
-		emp.setName("Rohan");
-		System.out.println(emp +" "+emp.hashCode());
-		assertNotEquals(hash, emp.hashCode());
+		assertEquals(emp1.hashCode(), emp1.hashCode());
+        assertNotEquals(emp1.hashCode(), emp2.hashCode());
+        assertNotEquals(emp1.hashCode(), emp3.hashCode());
+        assertNotEquals(emp1.hashCode(), emp4.hashCode());
+        assertNotEquals(emp1.hashCode(), emp5.hashCode());
+        assertEquals(emp1.hashCode(), emp8.hashCode());
+        assertNotEquals(emp1.hashCode(), emp6.hashCode());
+        assertNotEquals(emp1.hashCode(), emp7.hashCode());
 	}
 
 	

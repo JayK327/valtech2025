@@ -1,6 +1,10 @@
 package assignment1;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class Employee implements Comparable<Employee> {
 
@@ -33,21 +37,21 @@ public class Employee implements Comparable<Employee> {
 	}
     
     @Override
-	public int compareTo(Employee other) {
-    	if (this.level != other.level) {
-            return Integer.compare(this.level, other.level);
+	public int compareTo(Employee emp) {
+    	if (this.level != emp.level) {
+            return Integer.compare(this.level, emp.level);
         }   	
 
         // If level is the same, compare by age
-        if (this.experience != other.experience) {
-            return Integer.compare(this.experience, other.experience);
+        if (this.experience != emp.experience) {
+            return Integer.compare(this.experience, emp.experience);
         }
         // If age is the same, compare by salary
-        if ((this.salary!= other.salary)) {
-            return Float.compare(this.salary, other.salary);
+        if ((this.salary!= emp.salary)) {
+            return Float.compare(this.salary, emp.salary);
         }
         // If salary is the same, compare by experience
-        return this.gender.compareTo(other.gender);
+        return this.gender.compareTo(emp.gender);
 	}
 
 
@@ -174,14 +178,8 @@ public class Employee implements Comparable<Employee> {
     	}
 
 //		public EmployeeBuilder gender(String string) {
-//			// TODO Auto-generated method stub
-//			return null;
-//		}
-
-//		public EmployeeBuilder gender(String string) {
-//			// TODO Auto-generated method stub
 //			emp.setGender(Gender.valueOf(gender));
 //			return this;
-//		}    	
+		}    	
+    
     } 
-}
