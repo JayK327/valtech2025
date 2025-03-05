@@ -40,6 +40,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		this.sce = sce;
 	}
 	private Connection getConnection()  throws SQLException{
+		
 		return DriverManager.getConnection((String)sce.getAttribute("jdbc_url"),(String)sce.getAttribute("jdbc_user"),(String)sce.getAttribute("jdbc_password"));
 		  
 	}
@@ -49,7 +50,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		// TODO Auto-generated method stub
 		try(Connection conn = getConnection()){
 			PreparedStatement ps = conn.prepareStatement
-					("INSERT INTO EMPLOYEE (NAME,AGE,GENDER,SALARY,EXPERIENCE,LEVEL,ID) VALUES (?,?,?,?,?,?,?)");
+					("INSERT INTO EMPLOYEE (NAME,AGE,GENDER,SALARY,EXPERIENCE,LEVEL,DEPTID,ID) VALUES (?,?,?,?,?,?,?,?)");
 			setValuesToPreparedStatement(e, ps);
 			int rowsAffected = ps.executeUpdate();
 			System.out.println("Rows inserted = "+rowsAffected);
@@ -70,7 +71,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		ps.setFloat(4, e.getSalary());
 		ps.setInt(5, e.getExperience());
 		ps.setInt(6, e.getLevel());
-		ps.setInt(7, e.getId());
+		ps.setInt(8, e.getId());
+		ps.setInt(7, e.getDeptid());
 	}
 
 	@Override
@@ -78,7 +80,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		// TODO Auto-generated method stub
 		try(Connection conn = getConnection()){
 			PreparedStatement ps = conn.prepareStatement
-					("UPDATE EMPLOYEE SET NAME = ? ,AGE = ?,GENDER = ?,SALARY = ?,EXPERIENCE = ?,LEVEL = ? WHERE ID = ?");
+					("UPDATE EMPLOYEE SET NAME = ? ,AGE = ?,GENDER = ?,SALARY = ?,EXPERIENCE = ?,LEVEL = ?,DEPTID=? WHERE ID = ?");
 			setValuesToPreparedStatement(e, ps);
 			int rowsAffected = ps.executeUpdate();
 			System.out.println("Rows Updated = "+rowsAffected);
@@ -106,7 +108,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	public Employee get(int id) {
 				try(Connection conn = getConnection()){
 					PreparedStatement ps = conn.prepareStatement
-							("SELECT ID ,NAME,AGE,GENDER,SALARY,EXPERIENCE,LEVEL FROM EMPLOYEE WHERE ID = ?");
+							("SELECT ID ,NAME,AGE,GENDER,SALARY,EXPERIENCE,LEVEL,DEPTID FROM EMPLOYEE WHERE ID = ?");
 					ps.setInt(1, id);
 					ResultSet rs = ps.executeQuery();
 					if(rs.next()) { 
@@ -126,14 +128,14 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		
 		return Employee.builder().id(rs.getInt(1)).name(rs.getString(2)).age(rs.getInt(3))
 				.gender(Gender.valueOf(rs.getString(4))).salary(rs.getFloat(5)).experience(rs.getInt(6))
-				.level(rs.getInt(7)).build();
+				.level(rs.getInt(7)).deptid(rs.getInt(8)).build();
 	}
-	public List<Employee> getEmployeeByDepartment(int deptno){
+	public List<Employee> getEmployeeByDepartment(int deptid){
 		try(Connection conn=getConnection()){
 			List<Employee> emp=new ArrayList<>();
 			
-			PreparedStatement ps=conn.prepareStatement("Select ID,NAME,AGE,GENDER,SALARY,EXPERIENCE,LEVEL,DEPTNO FROM EMPLOYEE WHERE DEPTNO=? ");
-			ps.setInt(1, deptno);
+			PreparedStatement ps=conn.prepareStatement("Select ID,NAME,AGE,GENDER,SALARY,EXPERIENCE,LEVEL,DEPTID FROM EMPLOYEE WHERE DEPTID=? ");
+			ps.setInt(1, deptid);
 			ResultSet rs=ps.executeQuery();
 			while(rs.next()) {
 				emp.add(populateEmployee(rs));
@@ -153,7 +155,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		List<Employee> emps = new ArrayList<Employee>();
 		try(Connection conn = getConnection()){
 			PreparedStatement ps = conn.prepareStatement
-					("SELECT ID ,NAME,AGE,GENDER,SALARY,EXPERIENCE,LEVEL FROM EMPLOYEE");
+					("SELECT ID ,NAME,AGE,GENDER,SALARY,EXPERIENCE,LEVEL,DEPTID FROM EMPLOYEE");
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
 				emps.add(populateEmployee(rs));

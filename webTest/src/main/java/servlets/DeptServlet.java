@@ -96,97 +96,192 @@ import jakarta.servlet.http.HttpSession;
 public class DeptServlet extends HttpServlet {
 	private DeptDAO deptdao;	
 	private EmployeeDAOImpl empdao;
-	private DeptDAOImpl dept;
+	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		// TODO Auto-generated method stub
 //		ServletContext sce=config.getServletContext();
 //		deptdao=(DepDAOImpl)sce.getAttribute("Department");
 //		empdao=(EmployeeDAOImpl)sce.getAttribute("Employee");
-		deptdao=(DeptDAOImpl)config.getServletContext().getAttribute("dept");    
-		empdao=(EmployeeDAOImpl)config.getServletContext().getAttribute("emp");
-	    if (deptdao == null) {
-	        throw new ServletException("DeptDAO not initialized properly!");
-	    }
+//		ServletContext sce=(ServletContext) config.getServletContext().getAttribute("dept");
+//		deptdao=new DeptDAOImpl(sce);
+//		deptdao = (DeptDAOImpl) config.getServletContext().getAttribute("dept");
+		ServletContext sc = config.getServletContext();
+		deptdao=new DeptDAOImpl(sc);
+		empdao=new EmployeeDAOImpl(sc);
 
-	    if (deptdao.first() == null) {
-	        System.out.println("Warning: No departments found in the database.");
-	    }
+	  
+//		empdao=(EmployeeDAOImpl)config.getServletContext().getAttribute("emp");
+//	    if (deptdao == null) {
+//	    	System.out.println("----------------------------");
+//	        throw new ServletException("DeptDAO not initialized properly!");
+//	    }
+
+//	    if (deptdao.first() == null) {
+//	        System.out.println("Warning: No departments found in the database.");
+//	    }
 
 	}
 	
+//	@Override
+//	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		// TODO Auto-generated method stubs
+//		String operation=req.getParameter("operation");
+//		HttpSession session=req.getSession();
+//		Dept current=(Dept) session.getAttribute("current");
+//		if(current==null) {
+//			
+//			current=(Dept)deptdao.first();
+//			System.out.println(current);
+//		}
+//		else {
+//			if("First".equals(operation)) {
+//				current=deptdao.first();
+//			}
+//			else if("Last".equals(operation)) {
+//				current= deptdao.last();
+//			}
+//			else if("Previous".equals(operation)) {
+//				current=deptdao.previous(current.getId());
+//			}
+//			else {
+//				System.out.println("In the Next Method");
+//				System.out.println("Next");
+//				current=deptdao.next(current.getId());
+//			}
+//		}
+//
+//		
+//		session.setAttribute("current", current);
+//		req.setAttribute("emps", empdao.getEmployeeByDepartment(current.getId()));
+//		req.setAttribute("dept", current);
+//
+//		Cookie [] cookies=req.getCookies();
+//		for(int i=0;i<cookies.length;i++) {
+//			System.out.println(cookies[i].getName()+" "+cookies[i].getValue());
+//		}
+//		
+//		resp.addCookie(new Cookie("operation",operation));
+//		req.getRequestDispatcher("depts.jsp").forward(req,resp);
+//	}
+//	
+//	@Override
+//	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//		// TODO Auto-generated method stub
+//		req.setAttribute("dept",deptdao.first());
+//		HttpSession session=req.getSession();
+//		if((Boolean)req.getAttribute("flag")!=null && (Boolean)req.getAttribute("flag")==true) {
+//			req.setAttribute("dept",session.getAttribute("current"));
+//			req.getRequestDispatcher("/depts.jsp").forward(req, resp);
+//			return;
+////			session.setAttribute("current",session.getAttribute("current"));
+////			System.out.println(req.getAttribute("emps"));
+//		}
+//		else
+//		{
+//			
+//		req.setAttribute("emps",empdao.getEmployeeByDepartment(deptdao.first().getId()));
+//		session.setAttribute("current",deptdao.first());
+//		}
+////		session.setAttribute("current",deptdao.first());
+//
+//		req.getRequestDispatcher("/depts.jsp").forward(req, resp);
+//        
+//	}
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stubs
-		String operation=req.getParameter("operation");
-		HttpSession session=req.getSession();
-		Dept current=(Dept) session.getAttribute("current");
-		System.out.println("Printing The Current Object"+current);
-		if(current==null) {
-			
-			current=deptdao.first();
-			System.out.println(current);
-		}
-		else {
+		String operation = req.getParameter("operation");
+		HttpSession session = req.getSession();
+		Dept current =(Dept) session.getAttribute("current");
+ 
+		if(current == null) {
+			current = deptdao.first();
+		} else {
 			if("First".equals(operation)) {
-				current=deptdao.get(1);
-			}
-			else if("Last".equals(operation)) {
-				current= deptdao.last();
-			}
-			else if("Previous".equals(operation)) {
-				current=deptdao.previous(current.getId());
+				current = deptdao.first();
+			} else if("Last".equals(operation)) {
+				current = deptdao.last();
+			} else if("Previous".equals(operation)) {
+				current = deptdao.previous(current.getId());
 			}
 			else {
-				System.out.println("In the Next Method");
-				System.out.println("Next");
-				current=deptdao.next(current.getId());
+				current = deptdao.next(current.getId());
 			}
 		}
-
-		
+ 
 		session.setAttribute("current", current);
-		req.setAttribute("emps", empdao.getEmployeeByDepartment(current.getId()));
-		req.setAttribute("dept", current);
+	    session.setAttribute("employeeByDept", deptdao.getEmployeeByDeptId(current.getId()));
+	    req.setAttribute("dept", current);
+ 
+ 
+		if("Cancel".equals(operation)) {
+			req.setAttribute("emps", deptdao.getAll());
+			req.getRequestDispatcher("depts.jsp").forward(req, resp);
+			return;
+			}
+		
+ 
+		
+		Dept depts = Dept.builder().id(Integer.parseInt(req.getParameter("id")))
+				.name(req.getParameter("name")).location(req.getParameter("location")).build();
+		if("Update".equals(operation)) {
+			deptdao.update(depts);
+			req.setAttribute("depts",deptdao.getAll());
+			req.getRequestDispatcher("depts.jsp").forward(req, resp);
+			return;
+		}
+		if("Save".equals(operation)) {
+			deptdao.save(depts);
+			req.setAttribute("depts",deptdao.getAll());
+			req.getRequestDispatcher("depts.jsp").forward(req, resp);
+			return;
+		}
+		
 
-		Cookie [] cookies=req.getCookies();
-		for(int i=0;i<cookies.length;i++) {
+
+		Cookie [] cookies = req.getCookies();
+		for(int i =0;i<cookies.length;i++) {
 			System.out.println(cookies[i].getName()+" "+cookies[i].getValue());
 		}
-		
+ 
 		resp.addCookie(new Cookie("operation",operation));
-		req.getRequestDispatcher("depts.jsp").forward(req,resp);
+		req.getRequestDispatcher("depts.jsp").forward(req, resp);
 	}
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		req.setAttribute("dept",deptdao.first());
-		HttpSession session=req.getSession();
-		System.out.println("IN THE DEPT SERVLET"+session.getAttribute("current"));
-		if((Boolean)req.getAttribute("flag")!=null && (Boolean)req.getAttribute("flag")==true) {
-			System.out.println("In the if method");
-			System.out.println("in the if"+session.getAttribute("current"));	
-			req.setAttribute("dept",session.getAttribute("current"));
-			System.out.println(req.getAttribute("emps"));
-			req.getRequestDispatcher("/depts.jsp").forward(req, resp);
+	
+		req.setAttribute("dept", deptdao.first());
+		String operation = req.getParameter("operation");
+		HttpSession session = req.getSession();
+		session.setAttribute("current", deptdao.first());
+		Dept current=(Dept) session.getAttribute("current");
+	
+	
+		if("Update".equals(operation)) {
+			int id = Integer.parseInt(req.getParameter("id"));
+			Dept d = deptdao.get(id);
+			req.setAttribute("depts", d);
+			req.setAttribute("mode", "Update");
+			req.setAttribute("readonly", "readonly");
+			req.getRequestDispatcher("editDepartment.jsp").forward(req,resp);
 			return;
-//			session.setAttribute("current",session.getAttribute("current"));
-//			System.out.println(req.getAttribute("emps"));
+			}
+		if("Delete".equals(operation)) {
+			int id = Integer.parseInt(req.getParameter("id"));
+			deptdao.delete(id);
+			req.setAttribute("depts", deptdao.getAll());
+			req.getRequestDispatcher("depts.jsp").forward(req, resp);
+			return;
 		}
-		else
-		{
-			System.out.println("In the Else Method");
-			System.out.println(deptdao.first());
-		req.setAttribute("emps",empdao.getEmployeeByDepartment(deptdao.first().getId()));
-		session.setAttribute("current",deptdao.first());
-		System.out.println("Session"+session.getAttribute("current"));
+		if("new".equals(operation)) {
+			req.setAttribute("mode", "Save");
+			req.getRequestDispatcher("editDepartment.jsp").forward(req,resp);
+			return;
 		}
-//		session.setAttribute("current",deptdao.first());
-		System.out.println(empdao.getEmployeeByDepartment(deptdao.first().getId()));
-
-		req.getRequestDispatcher("/depts.jsp").forward(req, resp);
-
+		session.setAttribute("employeeByDept", deptdao.getEmployeeByDeptId(current.getId()));
+		req.setAttribute("depts", deptdao.getAll());
+		req.getRequestDispatcher("depts.jsp").forward(req, resp);
 	}
+
 }
 

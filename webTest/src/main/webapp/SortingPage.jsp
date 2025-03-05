@@ -80,22 +80,26 @@
 
     <label for="Level">Level</label>
     <input type="checkbox" name="level" value="Level" id="Level" <%= request.getParameter("level") != null ? "checked" : "" %> />
+    
+    
+    <label for="Deptid">Department ID</label>
+    <input type="checkbox" name="deptid" value="Deptid" id="Deptid" <%= request.getParameter("deptid") != null ? "checked" : "" %> />
 
     <%
         if ("Names".equals(request.getParameter("pars"))) {
             out.println("<p>Name</p><input type='text' name='name'/>");
         }
         if ("Age".equals(request.getParameter("ages"))) {
-            out.println("<p>Age</p><select name='age'><option value='greater'>Greater</option><option value='lesser'>Lesser</option><option value='equals'>Equals</option></select><input name='ab' type='text'/>");
+            out.println("<p>Age</p><select name='age'><option value='greater'>Greater</option><option value='lesser'>Lesser</option><option value='equals'>Equals</option></select><input name='A' type='text'/>");
         }
         if ("Salary".equals(request.getParameter("sal"))) {
-            out.println("<p>Salary</p><select name='salary'><option value='greater'>Greater</option><option value='lesser'>Lesser</option><option value='equals'>Equals</option></select><input name='cd' type='text'/>");
+            out.println("<p>Salary</p><select name='salary'><option value='greater'>Greater</option><option value='lesser'>Lesser</option><option value='equals'>Equals</option></select><input name='B' type='text'/>");
         }
         if ("Gender".equals(request.getParameter("gend"))) {
-            out.println("<p>Gender</p><select name='gender'><option value='equals'>Equals</option></select><input name='ef' type='text'/>");
+            out.println("<p>Gender</p><select name='gender'><option value='equals'>Equals</option></select><input name='C' type='text'/>");
         }
         if ("Experience".equals(request.getParameter("exp"))) {
-            out.println("<p>Experience</p><select name='expr'><option value='greater'>Greater</option><option value='lesser'>Lesser</option><option value='equals'>Equals</option></select><input name='gh' type='text'/>");
+            out.println("<p>Experience</p><select name='expr'><option value='greater'>Greater</option><option value='lesser'>Lesser</option><option value='equals'>Equals</option></select><input name='D' type='text'/>");
         }
        
         if ("Level".equals(request.getParameter("level"))) {
@@ -105,9 +109,11 @@
             out.println("    <option value='lesser' " + ("lesser".equals(request.getParameter("levelr")) ? "selected" : "") + ">Lesser</option>");
             out.println("    <option value='equals' " + ("equals".equals(request.getParameter("levelr")) ? "selected" : "") + ">Equals</option>");
             out.println("</select>");
-            out.println("<input name='ij' type='text' value='" + (request.getParameter("ij") != null ? request.getParameter("ij") : "") + "'/>");
+            out.println("<input name='ij' type='text' value='" + (request.getParameter("ij") != null ? request.getParameter("E") : "") + "'/>");
         }
-   
+        if ("Deptid".equals(request.getParameter("deptid"))) {
+            out.println("<p>Deptid</p><select name='deptid_option'><option value='greater'>Greater</option><option value='lesser'>Lesser</option><option value='equals'>Equals</option></select><input name='F' type='text'/>");
+        }
 
     %>
 

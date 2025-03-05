@@ -39,6 +39,10 @@
 		<td><input type="text" name="level" value="${emp.level}" /></td>
 	</tr>
 	<tr>
+		<td>Deptid</td>
+		<td><input type="text" name="deptid" value="${emp.deptid}" /></td>
+	</tr>
+	<tr>
 		<td colspan="2">
 			<input type="submit" name="operation" value='${mode}'/>
 			<input type="submit" name="operation" value="Cancel"/>

@@ -20,6 +20,7 @@
 	<th><a href="employees?operation=SortBySalary">Salary</a></th>
 	<th><a href="employees?operation=SortByExperience">Experience</a></th>
 	<th><a href="employees?operation=SortByLevel">Level</a></th>
+	<th><a href="employees?operation=SortByDept">Deptid</a></th>
 	<th>Actions</th>
 </tr>
 
@@ -35,6 +36,7 @@
 		<td>${e.salary}</td>
 		<td>${e.experience}</td>
 		<td>${e.level}</td>
+		<td>${e.deptid}</td>
 		<td>
 			<a href="employees?operation=Update&id=${e.id}">Update</a>
 			<a href="employees?operation=Delete&id=${e.id}">Delete</a>

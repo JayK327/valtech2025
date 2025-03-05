@@ -24,8 +24,9 @@ public class EmployeeServlet extends HttpServlet{
 	
 	private EmployeeDAO dao;
 	public void init(ServletConfig config) throws ServletException{
-		dao=(EmployeeDAOImpl)config.getServletContext().getAttribute("emp");
-		
+//		dao=(EmployeeDAOImpl)config.getServletContext().getAttribute("emp");
+		ServletContext sc = config.getServletContext();
+		dao=new EmployeeDAOImpl(sc);		
 	}
 	
 	@Override
@@ -50,7 +51,7 @@ public class EmployeeServlet extends HttpServlet{
 			    // Filter by Age (Integer)
 			    if ("Age".equals(req.getParameter("ages"))) { 
 			        String ageOperation = req.getParameter("age"); 
-			        String ageValueStr = req.getParameter("ab");
+			        String ageValueStr = req.getParameter("A");
 
 			        if (ageValueStr != null && !ageValueStr.isEmpty()) {
 			            int ageValue = Integer.parseInt(ageValueStr);
@@ -68,7 +69,7 @@ public class EmployeeServlet extends HttpServlet{
 			    try {
 		            // Filter by Gender (String)
 		            if ("Gender".equals(req.getParameter("gend"))) { 
-		                String genderValueStr = req.getParameter("ef"); // Get gender input value
+		                String genderValueStr = req.getParameter("C"); // Get gender input value
 
 		                if (genderValueStr != null && !genderValueStr.isEmpty()) {
 		                    try {
@@ -92,7 +93,7 @@ public class EmployeeServlet extends HttpServlet{
 			    // Filter by Experience
 			    if ("Experience".equals(req.getParameter("exp"))) { 
 			        String experienceOperation = req.getParameter("expr"); 
-			        String experienceValueStr = req.getParameter("gh");
+			        String experienceValueStr = req.getParameter("D");
 
 			        if (experienceValueStr != null && !experienceValueStr.isEmpty()) {
 			            int experienceValue = Integer.parseInt(experienceValueStr);
@@ -110,7 +111,7 @@ public class EmployeeServlet extends HttpServlet{
 			    // Filter by Level
 			    if ("Level".equals(req.getParameter("level"))) {
 			        String levelOperation = req.getParameter("levelr");
-			        String levelValueStr = req.getParameter("ij");
+			        String levelValueStr = req.getParameter("E");
 
 			        if (levelValueStr != null && !levelValueStr.isEmpty()) {
 			            int levelValue = Integer.parseInt(levelValueStr);
@@ -129,7 +130,7 @@ public class EmployeeServlet extends HttpServlet{
 			    // Filter by Salary (Float)
 			    if ("Salary".equals(req.getParameter("sal"))) { 
 			        String salaryOperation = req.getParameter("salary"); 
-			        String salaryValueStr = req.getParameter("cd");
+			        String salaryValueStr = req.getParameter("B");
 
 			        if (salaryValueStr != null && !salaryValueStr.isEmpty()) {
 			            float salaryValue = Float.parseFloat(salaryValueStr);
@@ -138,6 +139,23 @@ public class EmployeeServlet extends HttpServlet{
 			                if ("greater".equalsIgnoreCase(salaryOperation)) return emp.getSalary() > salaryValue;
 			                if ("lesser".equalsIgnoreCase(salaryOperation)) return emp.getSalary() < salaryValue;
 			                return emp.getSalary() == salaryValue; // Default to equals
+			            }).collect(Collectors.toList());
+
+			            req.setAttribute("filter", true);
+			        }
+			    }
+			    
+			    if ("Deptid".equals(req.getParameter("deptid"))) { 
+			    	String deptidOperation = req.getParameter("deptid_option"); 
+			        String deptidValueStr = req.getParameter("F");
+
+			        if (deptidValueStr != null && !deptidValueStr.isEmpty()) {
+			            int deptidValue = Integer.parseInt(deptidValueStr);
+
+			            l = l.stream().filter(emp -> {
+			                if ("greater".equalsIgnoreCase(deptidOperation)) return emp.getSalary() > deptidValue;
+			                if ("lesser".equalsIgnoreCase(deptidOperation)) return emp.getSalary() < deptidValue;
+			                return emp.getDeptid() == deptidValue; // Default to equals
 			            }).collect(Collectors.toList());
 
 			            req.setAttribute("filter", true);
@@ -260,7 +278,7 @@ public class EmployeeServlet extends HttpServlet{
 		}
 
 		else if("SortByExperience".equals(operation)) {
-			Boolean a=(Boolean)session.getAttribute("SortByAge");
+			Boolean a=(Boolean)session.getAttribute("SortByExperience");
 			System.out.println(a);
 		 if(a==null || !a)
 			{
@@ -269,15 +287,15 @@ public class EmployeeServlet extends HttpServlet{
 			 	
 			 	System.out.println(emp);
 				req.setAttribute("emps",emp);
-				session.setAttribute("SortByAge",true);
+				session.setAttribute("SortByExperience",true);
 				req.getRequestDispatcher("employees.jsp").forward(req,resp);
 				return;
 				
 			}
 			else if(a) {
-				System.out.println("Sort by Age True");
+				System.out.println("Sort by Experience True");
 				req.setAttribute("emps", dao.getAll().stream().sorted((o1,o2)->Integer.compare(o2.getExperience(),o1.getExperience())).collect(Collectors.toList()));
-				session.setAttribute("SortByAge", false);
+				session.setAttribute("SortByExperience", false);
 				req.getRequestDispatcher("employees.jsp").forward(req, resp);
 				return;
 			}
@@ -307,6 +325,30 @@ public class EmployeeServlet extends HttpServlet{
 			}
 			
 		}
+		else if("SortByDept".equals(operation)) {
+			Boolean a=(Boolean)session.getAttribute("SortByDept");
+			System.out.println(a);
+		 if(a==null || !a)
+			{
+			 	List<Employee> emp=dao.getAll();
+			 	emp=emp.stream().sorted((o1,o2)->Integer.compare(o1.getDeptid(), o2.getDeptid())).collect(Collectors.toList());
+			 	
+			 	System.out.println(emp);
+				req.setAttribute("emps",emp);
+				session.setAttribute("SortByDept",true);
+				req.getRequestDispatcher("employees.jsp").forward(req,resp);
+				return;
+				
+			}
+			else if(a) {
+				System.out.println("Sort by Dept True");
+				req.setAttribute("emps", dao.getAll().stream().sorted((o1,o2)->Integer.compare(o2.getDeptid(),o1.getDeptid())).collect(Collectors.toList()));
+				session.setAttribute("SortByDept", false);
+				req.getRequestDispatcher("employees.jsp").forward(req, resp);
+				return;
+			}
+			
+		}
 		else if("new".equals(operation)) {
 			req.setAttribute("mode","Save");
 //			req.setAttribute("readOnly", "");
@@ -325,11 +367,10 @@ public class EmployeeServlet extends HttpServlet{
 		    req.setAttribute("readOnly","readOnly");
 		    int id = Integer.parseInt(req.getParameter("id"));
 
-		    // Fetch employee
-		    Employee e = dao.get(id); // Ensure this returns an Employee, not DAO
+		    Employee e = dao.get(id); 
 
 		    if (e != null) {
-		        req.setAttribute("emp", e);  // Make sure "emp" is an Employee instance
+		        req.setAttribute("emp", e);  
 		        req.setAttribute("mode", "Update");
 		        req.getRequestDispatcher("editEmployee.jsp").forward(req, resp);
 		    } else {
@@ -356,30 +397,18 @@ public class EmployeeServlet extends HttpServlet{
 			return;
 		}
 
+		String genderParam = req.getParameter("gender");
 
-	    try {
-	        // Retrieve gender safely
-	        String genderParam = req.getParameter("gender");
-	        Gender gender = null;
-	        if (genderParam != null && !genderParam.trim().isEmpty()) {
-	            try {
-	                gender = Gender.valueOf(genderParam.trim().toUpperCase());
-	            } catch (IllegalArgumentException e) {
-	                throw new IllegalArgumentException("Invalid gender value: " + genderParam);
-	            }
-	        } else {
-	            throw new IllegalArgumentException("Gender cannot be null or empty.");
-	        }
 
-	        // Create Employee object safely
 	        Employee emp = Employee.builder()
 	            .id(Integer.parseInt(req.getParameter("id")))
 	            .name(req.getParameter("name"))
 	            .age(Integer.parseInt(req.getParameter("age")))
-	            .gender(gender)
+	            .gender(Gender.valueOf(genderParam.trim().toUpperCase()))
 	            .salary(Float.parseFloat(req.getParameter("salary")))
 	            .experience(Integer.parseInt(req.getParameter("experience")))
 	            .level(Integer.parseInt(req.getParameter("level")))
+	            .deptid(Integer.parseInt(req.getParameter("deptid")))
 	            .build();
 
 			if("Save".equals(operation)) {
@@ -398,15 +427,6 @@ public class EmployeeServlet extends HttpServlet{
 				return;
 			}
 
-	    } catch (IllegalArgumentException e) {
-	        req.setAttribute("errorMessage", "Invalid input: " + e.getMessage());
-	        req.getRequestDispatcher("newEmployee.jsp").forward(req, resp);
-	    }
-		{
-			String abc=req.getParameter("options");
-			System.out.println(abc);
-
-		}
 	}
 }
 

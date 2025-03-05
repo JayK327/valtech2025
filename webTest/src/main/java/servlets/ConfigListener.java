@@ -7,7 +7,9 @@ import dao.EmployeeDAOImpl;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
 
+@WebListener
 public class ConfigListener implements ServletContextListener {
 
 	@Override
@@ -16,7 +18,8 @@ public class ConfigListener implements ServletContextListener {
 		ServletContextListener.super.contextDestroyed(sce);
 	}
 	
-	private EmployeeDAOImpl dao;
+//	private EmployeeDAOImpl dao;
+//	private DeptDAO deptDao;
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		Properties pd=new Properties();
@@ -32,13 +35,13 @@ public class ConfigListener implements ServletContextListener {
 			context.setAttribute("jdbc_password", pd.getProperty("jdbc_password"));
 			context.setAttribute("jdbc_driver", pd.getProperty("jdbc_driver"));
 			System.out.println(pd.getProperty("jdbc_driver"));
-            dao=new EmployeeDAOImpl(context);
-            context.setAttribute("emp", dao);
-            
-			
-			
-            DeptDAOImpl deptdao = new DeptDAOImpl(context);
-            context.setAttribute("dept", deptdao);
+//            dao=new EmployeeDAOImpl(context);
+//            context.setAttribute("emp", dao);
+//            
+//			
+//			
+//            deptDao = new DeptDAOImpl(context);
+//            context.setAttribute("dept", deptDao);
 			
 			try {
 				Class.forName((String)context.getAttribute("jdbc_driver"));
