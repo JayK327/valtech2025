@@ -13,11 +13,11 @@ import utils.HibernateUtils;
 public interface OrderDAO {
 	void save(Order order);
 
-	Order get(int id);
+	Order get(long id);
 
 	void update(Order order);
 
-	void delete(int id);
+	void delete(long id);
 
 	List<Order> getAll();
 

@@ -29,7 +29,7 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 
 	@Override
-	public Order get(int id) {
+	public Order get(long id) {
 		return new HibernateTemplate(sessionFactory).load(Order.class, id);
 	
 	}
@@ -46,7 +46,7 @@ public class OrderDAOImpl implements OrderDAO {
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(long id) {
 		new HibernateTemplate(sessionFactory).delete(get(id));
 		
 	}

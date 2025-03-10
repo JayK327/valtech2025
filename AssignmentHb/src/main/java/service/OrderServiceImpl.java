@@ -15,27 +15,42 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private OrderDAO orderDAO;
+	@Autowired
 	private ItemDAO itemDAO;
+	@Autowired
+	private InventoryService inventoryService;
 
+	public void setItemDAO(ItemDAO itemDAO) {
+		this.itemDAO = itemDAO;
+	}
 	public void setOrderDAO(OrderDAO orderDAO) {
 		this.orderDAO = orderDAO;
 	}
-	public void resetInventory(Item item) {
-		item.setCurrentQuantity(item.getMaxQuantity());;
-		item.setReorderQuantity(0);
-		itemDAO.update(item);
+	public void setInventoryService(InventoryService inventoryService) {
+		this.inventoryService = inventoryService;
 	}
+//	public void resetInventory(Item item) {
+//		item.setCurrentQuantity(item.getMaxQuantity());;
+//		item.setReorderQuantity(0);
+//		itemDAO.update(item);
+//	}
 
 	@Override
 	public void save(Order order) {
 		boolean validOrder=true;
 		
-//if(l)
-		//lineOrderItems.forEach(l-> if(l -> l.getItem().getCur_quantity() >= l.getQuantity()) {return true});
+		//Check is the customer is enable or not to place order
+		if(order.getCustomer().getCustomerStatus().toString().equals("DISABLE")) {
+			System.out.println("CUSTOMER IS DISABLED");
+			return;
+		}
+
 		for (LineItem lineItem : order.getLineItems()) {
-			if(lineItem.getItem().getCurrentQuantity()>=lineItem.getQuantity()) {
+			Item item=inventoryService.get(lineItem.getItem().getId());
+			if(item.getCurrentQuantity()<=lineItem.getQuantity()) {
 				validOrder=false;
 				order.setStatus(Status.REJECTED);
+				inventoryService.deleteInventory(item.getId());
 				System.out.println("Ordered quantity not present");
 				break;
 			}
@@ -43,24 +58,17 @@ public class OrderServiceImpl implements OrderService {
 		
 		if(validOrder) {
 			order.setStatus(Status.PACKED);
-			orderDAO.save(order);
-			Item item;
-			for (LineItem lineItem : order.getLineItems()) {
-				item=itemDAO.get((int)lineItem.getItem().getId());
-				item.setCurrentQuantity(item.getReorderQuantity()+lineItem.getQuantity());
-				System.out.println(item.getCurrentQuantity());
-				itemDAO.update(item);
-				if(item.getCurrentQuantity()==0) {
-					resetInventory(item);
-				}
-				order.setStatus(Status.REJECTED);
-			}
+			inventoryService.updateInventory(order);
+			System.out.println("Ordered is valid");
+			System.out.println("Ordered PACKED");
+			
 		}
+		orderDAO.save(order);
 		
 	}
 
 	@Override
-	public Order get(int id) {
+	public Order get(long id) {
 		return orderDAO.get(id);
 	}
 	
@@ -75,7 +83,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(long id) {
 		orderDAO.delete(id);
 	}
 

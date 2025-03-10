@@ -27,7 +27,7 @@ public class Item {
     
     // One item can appear in multiple line items
     @OneToMany(targetEntity = LineItem.class, mappedBy = "item", cascade = CascadeType.ALL )
-    private Set<LineItem> lineItems;
+    private List<LineItem> lineItems;
 
 	public Item() {
 		super();
@@ -94,10 +94,10 @@ public class Item {
 		this.maxQuantity = maxQuantity;
 	}
 
-	public void setLineItems(Set<LineItem> lineItems) {
+	public void setLineItems(List<LineItem> lineItems) {
 		this.lineItems = lineItems;
 	}
-	public Set<LineItem> getLineItems() {
+	public List<LineItem> getLineItems() {
 		return lineItems;
 	}
 

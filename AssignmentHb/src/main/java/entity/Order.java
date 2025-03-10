@@ -30,7 +30,7 @@ public class Order {
     private Status status; // e.g., Delivered, On the way(Shipped), Packed,Ordered
     
 	public enum Status{
-		DELIVERED,ORDERED,SHIPPED,PACKED,REJECTED
+		DELIVERED,ORDERED,PACKED,REJECTED
 	}
 
     // Many orders belong to one customer
@@ -40,7 +40,7 @@ public class Order {
     
     // One order has many line items
     @OneToMany(targetEntity = LineItem.class,mappedBy = "order", cascade = CascadeType.ALL)
-    private Set<LineItem> lineItems;
+    private List<LineItem> lineItems;
     
 	public Order() {
 	
@@ -57,10 +57,10 @@ public class Order {
 		this.customer = customer;
 	}
 	
-	public Set<LineItem> getLineItems() {
+	public List<LineItem> getLineItems() {
 		return lineItems;
 	}
-	public void setLineItems(Set<LineItem> lineItems) {
+	public void setLineItems(List<LineItem> lineItems) {
 		this.lineItems = lineItems;
 	}
 
@@ -83,24 +83,24 @@ public class Order {
 	public String toString() {
 		return "Order [id=" + id + ", status=" + status + "]";
 	}
-	public void addLineItems(LineItem lineItem ) {
-		if(lineItems==null) {
-			lineItems=new HashSet<LineItem>();
-		}
-		if (lineItem.getOrder() == null) {
-
-	        System.out.println("LineItem's order is null");
-	    } else {
-	        lineItems.add(lineItem);
-	    }
-			
-		}
-	
-	public void removeLineItem(LineItem lineItem) {
-		if (lineItem != null) {
-            lineItems.remove(lineItem); // Remove the provided lineItem
-        }
-	}
+//	public void addLineItems(LineItem lineItem ) {
+//		if(lineItems==null) {
+//			lineItems=new HashSet<LineItem>();
+//		}
+//		if (lineItem.getOrder() == null) {
+//
+//	        System.out.println("LineItem's order is null");
+//	    } else {
+//	        lineItems.add(lineItem);
+//	    }
+//			
+//		}
+//	
+//	public void removeLineItem(LineItem lineItem) {
+//		if (lineItem != null) {
+//            lineItems.remove(lineItem); // Remove the provided lineItem
+//        }
+//	}
     
     
 }

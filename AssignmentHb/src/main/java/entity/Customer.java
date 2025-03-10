@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,19 +27,37 @@ public class Customer {
 	private int age;
 	private String address;
 	private String permanentAddress;
+	@Enumerated(EnumType.STRING)
+	private CustomerStatus customerStatus=CustomerStatus.ENABLE;
+
+	public enum CustomerStatus{
+		ENABLE,DISABLE
+	}
 	
     // One customer can have multiple orderss
 	@OneToMany(targetEntity = Order.class,mappedBy = "customer", cascade = CascadeType.ALL)
 	private Set<Order> orders;
 
-	public Customer(String name, int age, String address, String permanentAddress) {
-		
+	
+	public Customer(String name, int age, String address, String permanentAddress, CustomerStatus customerStatus) {
+		super();
 		this.name = name;
 		this.age = age;
 		this.address = address;
 		this.permanentAddress = permanentAddress;
-
+		this.customerStatus = customerStatus;
 	}
+	
+
+	public Customer(String name, int age, String address, String permanentAddress) {
+		super();
+		this.name = name;
+		this.age = age;
+		this.address = address;
+		this.permanentAddress = permanentAddress;
+	}
+
+
 	public Customer() {
 		super();
 	}
@@ -86,16 +106,21 @@ public class Customer {
 		return "Customer [id=" + id + ", name=" + name + ", age=" + age + ", address=" + address + ", permanentAddress="
 				+ permanentAddress +  "]";
 	}
-	public void addOrder(Order order) {
-		if(orders==null) orders=new HashSet<Order>();
-		orders.add(order);
-			order.setCustomer(this);	
-			
-		}
-	
-	public void removeOrder(Order order) {
-		orders.remove(order);
-		order.setCustomer(null);
+//	public void addOrder(Order order) {
+//		if(orders==null) orders=new HashSet<Order>();
+//		orders.add(order);
+//			order.setCustomer(this);	
+//			
+//		}
+//	
+//	public void removeOrder(Order order) {
+//		orders.remove(order);
+//		order.setCustomer(null);
+//	}
+	public CustomerStatus getCustomerStatus() {
+		return customerStatus;
 	}
-	
+	public void setCustomerStatus(CustomerStatus customerStatus) {
+		this.customerStatus = customerStatus;
+	}
 }

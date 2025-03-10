@@ -36,12 +36,11 @@ public class LineItem {
 
 	
 
-	public LineItem(int quantity, Order order, Item item) {
+	public LineItem(int quantity) {
 		super();
 		
 		this.quantity = quantity;
-		this.order = order;
-		this.item = item;
+		
 	}
 
 

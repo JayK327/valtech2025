@@ -12,14 +12,14 @@ import utils.HibernateUtils;
 public interface LineItemDAO {
 	void save(LineItem item);
 
-	LineItem get(int id);
+	LineItem get(long id);
 
 	List<LineItem> getAll();
 	
-//	List<LineItem> getByOrderId(int id);
+//	List<LineItem> getByOrderId(long id);
 
 	void update(LineItem item);
 
-	void delete(int id);
+	void delete(long id);
    
 }

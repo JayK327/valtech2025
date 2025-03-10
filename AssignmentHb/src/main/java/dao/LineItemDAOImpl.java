@@ -22,7 +22,7 @@ public class LineItemDAOImpl implements LineItemDAO {
 		new HibernateTemplate(sessionFactory).save(lineItem);
 	}
 	@Override
-	public LineItem get(int id) {
+	public LineItem get(long id) {
 		return new HibernateTemplate(sessionFactory).load(LineItem.class,id);
 	}
 	@Override
@@ -31,12 +31,12 @@ public class LineItemDAOImpl implements LineItemDAO {
 		
 	}
 	@Override
-	public void delete(int id) {
+	public void delete(long id) {
 		new HibernateTemplate(sessionFactory).delete(get(id));		
 	}
 	@Override
 	public List<LineItem> getAll() {
-		return new HibernateTemplate(sessionFactory).find("from LineItem lineItem");
+		return new HibernateTemplate(sessionFactory).find("from LineItem l");
 	}
 	
 //	@Override

@@ -21,7 +21,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/tx spring-tx-3.2.xsd h
 		<p:property name="hibernateProperties">
 			<p:props>
 			 	<p:prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</p:prop>
-				<p:prop key="hibernate.hdm2ddl.auto">create</p:prop>
+				<p:prop key="hibernate.hdm2ddl.auto">update</p:prop>
 				<p:prop key="hibernate.show_sql">true</p:prop>
 			</p:props>
 		
@@ -37,8 +37,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/tx spring-tx-3.2.xsd h
 	
 	<p:bean class="service.CustomerServiceImpl"></p:bean>
 	<p:bean class="service.OrderServiceImpl"></p:bean>
-	<p:bean class="service.ItemServiceImpl"></p:bean>
-	<p:bean class="service.LineItemServiceImpl"></p:bean>
+	<p:bean class="service.InventoryServiceImpl"></p:bean>
+	<!-- <p:bean class="service.ItemServiceImpl"></p:bean>
+	<p:bean class="service.LineItemServiceImpl"></p:bean> -->
 	<p:bean class="dao.CustomerDAOImpl"></p:bean>
 	<p:bean class="dao.OrderDAOImpl"></p:bean>
 	<p:bean class="dao.ItemDAOImpl"></p:bean>
@@ -46,6 +47,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/tx spring-tx-3.2.xsd h
 	<p:import resource="classpath:jdbc.xml" />
 	<tx:annotation-driven transaction-manager="tm" /> 
 
-
+	<p:import resource="classpath:jdbc.xml"/>
 
 </p:beans>

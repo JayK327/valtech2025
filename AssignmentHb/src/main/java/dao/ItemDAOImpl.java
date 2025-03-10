@@ -31,12 +31,12 @@ public class ItemDAOImpl implements ItemDAO {
 		
 	}
 	@Override
-	public void delete(int id) {
+	public void delete(long id) {
 		new HibernateTemplate(sessionFactory).delete(get(id));		
 	}
 	@Override
 	public List<Item> getAll() {
-		return new HibernateTemplate(sessionFactory).find("from Item i");
+		return new HibernateTemplate(sessionFactory).find("from Item c");
 	}
 }
 

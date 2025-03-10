@@ -19,7 +19,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public Customer get(int id) {
+	public Customer get(long id) {
 		return customerDAO.get(id);
 	}
 
@@ -29,7 +29,7 @@ public class CustomerServiceImpl implements CustomerService {
 	}
 
 	@Override
-	public void delete(int id) {
+	public void delete(long id) {
 		// TODO Auto-generated method stub
 		customerDAO.delete(id);
 	}

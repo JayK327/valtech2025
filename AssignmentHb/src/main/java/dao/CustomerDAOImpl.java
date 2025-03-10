@@ -33,7 +33,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		
 	}
 	@Override
-	public void delete(int id) {
+	public void delete(long id) {
 		new HibernateTemplate(sessionFactory).delete(get(id));		
 	}
 	@Override
