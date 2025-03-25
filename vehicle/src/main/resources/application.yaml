@@ -1,0 +1,21 @@
+server:
+  port: 9040
+
+spring:
+  application:
+    name: VEHICLE
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vehiclemetadata
+    username: postgres
+    password: postgres
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+eureka:
+  client:
+    server-url:
+      defaultZone: http://localhost:8761/eureka
