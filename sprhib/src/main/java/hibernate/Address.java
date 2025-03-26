@@ -14,7 +14,6 @@ public class Address {
 	private int zipcode;
 //	@OneToOne(targetEntity = Address.class)
 	@OneToOne(targetEntity = Customer.class)
-
 	@PrimaryKeyJoinColumn
 	private Customer customer;
 	

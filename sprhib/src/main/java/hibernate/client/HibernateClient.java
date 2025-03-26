@@ -40,7 +40,7 @@ public class HibernateClient {
 //	ses.createQuery("FROM Customer c WHERE c.age > ?").setInteger(0, 25).list().stream().forEach(t->System.out.println(t));
 
 		ses.createQuery("SELECT t.amount FROM Tx t JOIN t.account.customers c WHERE c.age< ? ").setInteger(0, 34).list().stream().forEach(t->System.out.println(t));
-//uses join in m-m, o-m relationship and "." in case of o-o ,m-o  relationship.
+     //uses join in m-m, o-m relationship and "." in case of o-o ,m-o  relationship.
 		
 		
 //		StudentId id=(StudentId) ses.save(new Student(new StudentId(1,2025),"Abc","Def","CS",9475548458L

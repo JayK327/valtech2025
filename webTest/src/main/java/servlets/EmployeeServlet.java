@@ -38,7 +38,7 @@ public class EmployeeServlet extends HttpServlet{
 		List<Employee> l=dao.getAll();;
 			try {	
 			    // Filter by Name (String)
-			    if ("Names".equals(req.getParameter("pars"))) { 
+			    if ("Names".equals(req.getParameter("namePars"))) { 
 			        String nameValue = req.getParameter("name");
 
 			        if (nameValue != null && !nameValue.isEmpty()) {
@@ -49,8 +49,8 @@ public class EmployeeServlet extends HttpServlet{
 			        }
 			    }
 			    // Filter by Age (Integer)
-			    if ("Age".equals(req.getParameter("ages"))) { 
-			        String ageOperation = req.getParameter("age"); 
+			    if ("Age".equals(req.getParameter("agePars"))) { 
+			        String ageOperation = req.getParameter("ageOpr"); 
 			        String ageValueStr = req.getParameter("A");
 
 			        if (ageValueStr != null && !ageValueStr.isEmpty()) {
@@ -59,7 +59,7 @@ public class EmployeeServlet extends HttpServlet{
 			            l = l.stream().filter(emp -> {
 			                if ("greater".equalsIgnoreCase(ageOperation)) return emp.getAge() > ageValue;
 			                if ("lesser".equalsIgnoreCase(ageOperation)) return emp.getAge() < ageValue;
-			                return emp.getAge() == ageValue; // Default to equals
+			                return emp.getAge() == ageValue; 
 			            }).collect(Collectors.toList());
 
 			            req.setAttribute("filter", true);
@@ -68,8 +68,8 @@ public class EmployeeServlet extends HttpServlet{
 
 			    try {
 		            // Filter by Gender (String)
-		            if ("Gender".equals(req.getParameter("gend"))) { 
-		                String genderValueStr = req.getParameter("C"); // Get gender input value
+		            if ("Gender".equals(req.getParameter("genderPars"))) { 
+		                String genderValueStr = req.getParameter("C"); 
 
 		                if (genderValueStr != null && !genderValueStr.isEmpty()) {
 		                    try {
@@ -83,7 +83,7 @@ public class EmployeeServlet extends HttpServlet{
 		                    }
 		                }
 		            }
-		            // Set the filtered employee list
+		            
 		            req.setAttribute("emps", l);
 
 		        } catch (Exception e) {
@@ -91,8 +91,8 @@ public class EmployeeServlet extends HttpServlet{
 		        }
 
 			    // Filter by Experience
-			    if ("Experience".equals(req.getParameter("exp"))) { 
-			        String experienceOperation = req.getParameter("expr"); 
+			    if ("Experience".equals(req.getParameter("expPars"))) { 
+			        String experienceOperation = req.getParameter("expOpr"); 
 			        String experienceValueStr = req.getParameter("D");
 
 			        if (experienceValueStr != null && !experienceValueStr.isEmpty()) {
@@ -101,7 +101,7 @@ public class EmployeeServlet extends HttpServlet{
 			            l = l.stream().filter(emp -> {
 			                if ("greater".equalsIgnoreCase(experienceOperation)) return emp.getExperience() > experienceValue;
 			                if ("lesser".equalsIgnoreCase(experienceOperation)) return emp.getExperience() < experienceValue;
-			                return emp.getExperience() == experienceValue; // Default to equals
+			                return emp.getExperience() == experienceValue; 
 			            }).collect(Collectors.toList());
 
 			            req.setAttribute("filter", true);
@@ -109,8 +109,8 @@ public class EmployeeServlet extends HttpServlet{
 			    }
 
 			    // Filter by Level
-			    if ("Level".equals(req.getParameter("level"))) {
-			        String levelOperation = req.getParameter("levelr");
+			    if ("Level".equals(req.getParameter("levelPars"))) {
+			        String levelOperation = req.getParameter("levelOpr");
 			        String levelValueStr = req.getParameter("E");
 
 			        if (levelValueStr != null && !levelValueStr.isEmpty()) {
@@ -119,7 +119,7 @@ public class EmployeeServlet extends HttpServlet{
 			            l = l.stream().filter(emp -> {
 			                if ("greater".equalsIgnoreCase(levelOperation)) return emp.getLevel() > levelValue;
 			                if ("lesser".equalsIgnoreCase(levelOperation)) return emp.getLevel() < levelValue;
-			                return emp.getLevel() == levelValue; // Default to equals
+			                return emp.getLevel() == levelValue; 
 			            }).collect(Collectors.toList());
 
 			            req.setAttribute("filter", true);
@@ -128,8 +128,8 @@ public class EmployeeServlet extends HttpServlet{
 			    
 
 			    // Filter by Salary (Float)
-			    if ("Salary".equals(req.getParameter("sal"))) { 
-			        String salaryOperation = req.getParameter("salary"); 
+			    if ("Salary".equals(req.getParameter("salPars"))) { 
+			        String salaryOperation = req.getParameter("salaryOpr"); 
 			        String salaryValueStr = req.getParameter("B");
 
 			        if (salaryValueStr != null && !salaryValueStr.isEmpty()) {
@@ -138,31 +138,30 @@ public class EmployeeServlet extends HttpServlet{
 			            l = l.stream().filter(emp -> {
 			                if ("greater".equalsIgnoreCase(salaryOperation)) return emp.getSalary() > salaryValue;
 			                if ("lesser".equalsIgnoreCase(salaryOperation)) return emp.getSalary() < salaryValue;
-			                return emp.getSalary() == salaryValue; // Default to equals
+			                return emp.getSalary() == salaryValue; 
 			            }).collect(Collectors.toList());
 
 			            req.setAttribute("filter", true);
 			        }
 			    }
 			    
-			    if ("Deptid".equals(req.getParameter("deptid"))) { 
-			    	String deptidOperation = req.getParameter("deptid_option"); 
+			    if ("Deptid".equals(req.getParameter("deptPars"))) { 
+			    	String deptidOperation = req.getParameter("deptOpr"); 
 			        String deptidValueStr = req.getParameter("F");
 
 			        if (deptidValueStr != null && !deptidValueStr.isEmpty()) {
 			            int deptidValue = Integer.parseInt(deptidValueStr);
 
 			            l = l.stream().filter(emp -> {
-			                if ("greater".equalsIgnoreCase(deptidOperation)) return emp.getSalary() > deptidValue;
-			                if ("lesser".equalsIgnoreCase(deptidOperation)) return emp.getSalary() < deptidValue;
-			                return emp.getDeptid() == deptidValue; // Default to equals
+			                if ("greater".equalsIgnoreCase(deptidOperation)) return emp.getDeptid() > deptidValue;
+			                if ("lesser".equalsIgnoreCase(deptidOperation)) return emp.getDeptid() < deptidValue;
+			                return emp.getDeptid() == deptidValue; 
 			            }).collect(Collectors.toList());
 
 			            req.setAttribute("filter", true);
 			        }
 			    }
 
-			    // Set employees list after filtering
 			    req.setAttribute("emps", l);
 
 			} catch (NumberFormatException e) {

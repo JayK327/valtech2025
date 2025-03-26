@@ -1,0 +1,21 @@
+server:
+  port: 9060
+
+spring:
+  application:
+    name: Assignment-MS-quiz-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/microser
+    username: postgres
+    password: postgres
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka

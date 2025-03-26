@@ -16,6 +16,8 @@
 	<mapping class="com.valtech.ProjectWithMaven.Address"/>
 	<mapping class="com.map.Question"/>
 	<mapping class="com.map.Answer"/>
+	<mapping class="com.map1.Emp"/>
+	<mapping class="com.map1.Project"/>
 	
 	</session-factory>
 </hibernate-configuration>

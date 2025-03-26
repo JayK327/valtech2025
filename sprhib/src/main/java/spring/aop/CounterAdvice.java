@@ -1,14 +1,13 @@
 package spring.aop;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
 
 import org.springframework.aop.MethodBeforeAdvice;
 
 public class CounterAdvice implements MethodBeforeAdvice{
-	private Map<String,Integer> counters;
+	public Map<String,Integer> counters;
 	
 	public void any() {
 		System.out.println("Initialize counterrs.....");

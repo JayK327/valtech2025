@@ -209,7 +209,7 @@ public class DeptServlet extends HttpServlet {
 		}
  
 		session.setAttribute("current", current);
-	    session.setAttribute("employeeByDept", deptdao.getEmployeeByDeptId(current.getId()));
+	    session.setAttribute("employeeByDept", empdao.getEmployeeByDepartment(current.getId()));
 	    req.setAttribute("dept", current);
  
  
@@ -278,7 +278,7 @@ public class DeptServlet extends HttpServlet {
 			req.getRequestDispatcher("editDepartment.jsp").forward(req,resp);
 			return;
 		}
-		session.setAttribute("employeeByDept", deptdao.getEmployeeByDeptId(current.getId()));
+		session.setAttribute("employeeByDept", empdao.getEmployeeByDepartment(current.getId()));
 		req.setAttribute("depts", deptdao.getAll());
 		req.getRequestDispatcher("depts.jsp").forward(req, resp);
 	}

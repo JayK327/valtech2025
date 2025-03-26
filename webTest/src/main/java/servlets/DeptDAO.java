@@ -23,7 +23,6 @@ public interface DeptDAO {
 
 	List<Dept> getAll();
 	
-	List<Employee> getEmployeeByDeptId(int id);
 
 }
 

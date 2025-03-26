@@ -2,14 +2,14 @@ package com.valtech.hackathon.vehicle.services;
 
 import java.util.List;
 
-import com.valtech.hackathon.vehicle.vos.VehicleVO;
+import com.valtech.hackathon.vehicle.dtos.VehicleDTO;
 
 public interface VehicleService {
 
-	List<VehicleVO> getAllVehicles();
+	List<VehicleDTO> getAllVehicles();
 
-	VehicleVO saveOrUpdateVehicle(VehicleVO vo);
+	VehicleDTO saveOrUpdateVehicle(VehicleDTO vo);
 
-	VehicleVO getVehicle(long id);
+	VehicleDTO getVehicle(long id);
 
 }

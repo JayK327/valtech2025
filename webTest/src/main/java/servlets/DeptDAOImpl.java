@@ -263,9 +263,7 @@ public class DeptDAOImpl implements DeptDAO {
 		return Dept.builder().id(rs.getInt(1)).name(rs.getString(2)).location(rs.getString(3)).build();
 	}
 	
-	private Employee populateEmployee(ResultSet rs) throws SQLException {
-		return Employee.builder().id(rs.getInt(1)).name(rs.getString(2)).age(rs.getInt(3)).gender(Employee.Gender.valueOf(rs.getString(4))).salary(rs.getFloat(5)).experience(rs.getInt(6)).level(rs.getInt(7)).deptid(rs.getInt(8)).build();
-	}
+
 
 	@Override
 	public Dept get(int id) {
@@ -305,22 +303,7 @@ public class DeptDAOImpl implements DeptDAO {
 		}
 		return ls;
 	}
-	@Override
-	public List<Employee> getEmployeeByDeptId(int deptid) {
-		List<Employee> getEmployeebyDeptId = new ArrayList<Employee>();
-		try(Connection con = getConnection(this.sce)){
-			PreparedStatement ps = con.prepareStatement("SELECT ID, NAME, AGE, GENDER, SALARY, EXPERIENCE, LEVEL, DEPTID FROM EMPLOYEE WHERE DEPTID = ?");
-			ps.setInt(1, deptid);
-			ResultSet rs = ps.executeQuery();
-			while(rs.next()) {
-				System.out.println("GETemployeeBYdeptID");
-				getEmployeebyDeptId.add(populateEmployee(rs));
-			}
-		} catch (Exception e) {
-			throw new RuntimeException();
-		}
-		return getEmployeebyDeptId;
-	}
+
 	
 	@Override
 	public Dept first() {

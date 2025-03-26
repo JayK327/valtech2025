@@ -8,32 +8,32 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.valtech.hackathon.vehicle.dtos.VehicleDTO;
 import com.valtech.hackathon.vehicle.entities.Vehicle;
-import com.valtech.hackathon.vehicle.repos.VehicleRepo;
-import com.valtech.hackathon.vehicle.vos.VehicleVO;
+import com.valtech.hackathon.vehicle.repository.VehicleRepository;
 
 
 @Service
 @Transactional(propagation = Propagation.REQUIRED)
 public class VehicleServiceImpl implements VehicleService {
 	@Autowired
-	private VehicleRepo vehicleRepo;
+	private VehicleRepository vehicleRepo;
 	
 	
 	@Override
-	public List<VehicleVO> getAllVehicles(){
-		return vehicleRepo.findAll().stream().map(l->VehicleVO.from(l)).collect(Collectors.toList());
+	public List<VehicleDTO> getAllVehicles(){
+		return vehicleRepo.findAll().stream().map(l->VehicleDTO.from(l)).collect(Collectors.toList());
 	}
 
 	@Override
-	public VehicleVO saveOrUpdateVehicle(VehicleVO vo) {
+	public VehicleDTO saveOrUpdateVehicle(VehicleDTO vo) {
 		Vehicle v=vo.to();
 		v= vehicleRepo.save(v);
-		return VehicleVO.from(v);
+		return VehicleDTO.from(v);
 	}
 	@Override   
-	public VehicleVO getVehicle(long id) {
-		return VehicleVO.from(vehicleRepo.getReferenceById(id));
+	public VehicleDTO getVehicle(long id) {
+		return VehicleDTO.from(vehicleRepo.getReferenceById(id));
 	}
 	
 	

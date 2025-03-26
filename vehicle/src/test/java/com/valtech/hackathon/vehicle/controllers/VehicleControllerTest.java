@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
-import com.valtech.hackathon.vehicle.vos.VehicleVO;
+import com.valtech.hackathon.vehicle.dtos.VehicleDTO;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class VehicleControllerTest {
@@ -30,8 +30,11 @@ public class VehicleControllerTest {
 			List vehicles=restTemplate.getForObject(url, List.class);
 			if(vehicles.size()==0) {
 				
-				restTemplate.postForObject(url, new VehicleVO(0, "Toyota", "Corolla", 15.5, 2000000L, "Sedan"), VehicleVO.class);
-			    restTemplate.postForObject(url, new VehicleVO(0, "Tesla", "X", 12.5, 2300000L, "ybrid"), VehicleVO.class);
+				restTemplate.postForObject(url, new VehicleDTO(0, "Altroz", "Tata", 20, 820000L, "Hatchback"), VehicleDTO.class);
+			    restTemplate.postForObject(url, new VehicleDTO(0, "Baleno", "MarutiSuzuki", 22, 780000L, "Hatchback"), VehicleDTO.class);
+			    restTemplate.postForObject(url, new VehicleDTO(0, "Punch", "Tata", 17, 700000L, "MUV"), VehicleDTO.class);
+			    restTemplate.postForObject(url, new VehicleDTO(0, "I20", "Hyundai", 18, 900000L, "Hatchback"), VehicleDTO.class);
+			    restTemplate.postForObject(url, new VehicleDTO(0, "Breeza", "MarutiSuzuki", 18, 1150000L, "SUV"), VehicleDTO.class);
 			      
 			}
 		}

@@ -97,7 +97,6 @@ public class Employee implements Comparable<Employee> {
     	return new EmployeeBuilder(new Employee());
     }
 
-    // Override hashCode and equals
     
     @Override
 	public String toString() {
@@ -137,6 +136,8 @@ public class Employee implements Comparable<Employee> {
 		return age == other.age && experience == other.experience && gender == other.gender && id == other.id
 				&& level == other.level && Objects.equals(name, other.name)
 				&& Float.floatToIntBits(salary) == Float.floatToIntBits(other.salary);
+		//name can have null pointer exception therefore handled carefully
+		//also float have precision issue therefore they also handled seperately
 	}
     
     public static class EmployeeBuilder{
