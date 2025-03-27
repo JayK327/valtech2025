@@ -1,13 +1,13 @@
-package com.valtech.AssignmentSpringMVC;
+package com.valtech.training.assignment;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AssignmentSpringMvcApplication {
+public class SpringMVCApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AssignmentSpringMvcApplication.class, args);
+		SpringApplication.run(SpringMVCApplication.class, args);
 	}
 
 }

@@ -1,10 +1,10 @@
-package com.valtech.AssignmentSpringMVC;
+package com.valtech.training.assignment;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AssignmentSpringMvcApplicationTests {
+class SpringMVCApplicationTests {
 
 	@Test
 	void contextLoads() {
